@@ -1,5 +1,10 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>MainBackground.qml</file>
+        <file>MainBackgroundForm.ui.qml</file>
+        <file>fonts/VT323-Regular.ttf</file>
+        <file>Player.qml</file>
+        <file>PlayerForm.ui.qml</file>
     </qresource>
 </RCC>
