@@ -6,5 +6,7 @@
         <file>fonts/VT323-Regular.ttf</file>
         <file>Player.qml</file>
         <file>PlayerForm.ui.qml</file>
+        <file>Ball.qml</file>
+        <file>BallForm.ui.qml</file>
     </qresource>
 </RCC>
