@@ -74,6 +74,7 @@ Item {
         color: "#b3b3b3"
         text: qsTr(`${playerLeftScores}`)
         horizontalAlignment: Text.AlignHCenter
+        font.family: bupongFont.name
         font.pixelSize: 100
     }
 
@@ -83,6 +84,7 @@ Item {
         color: "#b3b3b3"
         text: qsTr(`${playerRightScores}`)
         horizontalAlignment: Text.AlignHCenter
+        font.family: bupongFont.name
         font.pixelSize: 100
     }
 }

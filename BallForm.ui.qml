@@ -1,9 +1,10 @@
-import QtQuick 2.4
+import QtQuick 2.12
 
 Item {
     id: ball
     width: 20
     height: 20
+    antialiasing: true
     Rectangle {
         width: parent.width
         height: parent.height

@@ -12,9 +12,13 @@ Window {
     title: qsTr("Bupong")
 
     MainBackground{
+
+        property bool initialMove: true
+
         id: mainBackground
         playerLeftScores: ballMain.playerLeftScore
         playerRightScores: ballMain.playerRightScore
+
         focus: true
         Timer {
             interval: 10;
@@ -23,7 +27,8 @@ Window {
             onTriggered: {
                 playerLeft.move()
                 playerRight.move()
-                ballMain.move(1.00,0.00)
+                parent.initialMove ? ballMain.initMove(1.00,0.00) : ballMain.move()
+                parent.initialMove = ballMain.isMoveInitial
             }
         }
 

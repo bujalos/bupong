@@ -5,6 +5,7 @@ Item {
     id: player
     width: 20
     height: 80
+    antialiasing: true
     Rectangle {
         color: "#ffffff"
         border.color: "#000000"
