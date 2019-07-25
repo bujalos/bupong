@@ -8,5 +8,6 @@
         <file>PlayerForm.ui.qml</file>
         <file>Ball.qml</file>
         <file>BallForm.ui.qml</file>
+        <file>Helpers.js</file>
     </qresource>
 </RCC>

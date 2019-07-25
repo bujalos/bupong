@@ -1,4 +1,5 @@
 import QtQuick 2.12
+import "Helpers.js" as Helpers
 
 BallForm {
     property double speed: 1.0
@@ -7,10 +8,13 @@ BallForm {
     property var playerR: { x: new Array; y: new Array; }
     property var playerL: { x: new Array; y: new Array; }
     property var playerRight
-    property var playerLeft
+    property var playerLeft    
     property bool isMoveInitial: true
     property var dirX: []
     property var dirY: []
+    property string direction
+    property string playerRightDirection
+    property string playerLeftDirection
 
     x: 390.00
     y: 390.00
@@ -21,50 +25,45 @@ BallForm {
         if(playerLeftScore > playerRightScore) {
             x += (valX * speed)
             y += (valY * speed)
-            dirX = elementDirection(dirX, x)
-            dirY = elementDirection(dirY, y)
+            dirX = Helpers.getElementDirection(dirX, x)
+            dirY = Helpers.getElementDirection(dirY, y)
         }else if(playerRightScore > playerLeftScore) {
             x -= (valX * speed)
             y -= (valY * speed)
-            dirX = elementDirection(dirX, x)
-            dirY = elementDirection(dirY, y)
+            dirX = Helpers.getElementDirection(dirX, x)
+            dirY = Helpers.getElementDirection(dirY, y)
         }else{
             x += (valX * speed)
             y += (valY * speed)
-            dirX = elementDirection(dirX, x)
-            dirY = elementDirection(dirY, y)
+            dirX = Helpers.getElementDirection(dirX, x)
+            dirY = Helpers.getElementDirection(dirY, y)
         }
         checkPosition()
         console.log(`Player right position X: ${playerRight.x} and Y: ${playerRight.y}`)
     }
 
+    function move() {
+      console.log("move normal...")
+    }
+
+
     //console.log(`Ball speed: ${speed} and position x: ${x}, y: ${y}`)
 
     // create scores and and sets initial move to true
     function checkPosition() {
-        if(x > 780.00) {
-            playerLeftScore++
-            x = 390.00
-            y = 390.00
-            isMoveInitial = true
-        }else if(x < 10.00) {
-            playerRightScore++
-            x = 390.00
-            y = 390.00
-            isMoveInitial = true
+        if(x > 771.00) {
+            ballMain.playerLeftScore++
+            ballMain.x = 390.00
+            ballMain.y = 390.00
+            ballMain.isMoveInitial = true
+        }else if(x < 19.00) {
+            ballMain.playerRightScore++
+            ballMain.x = 390.00
+            ballMain.y = 390.00
+            ballMain.isMoveInitial = true
         }else{
-            return
+            ballMain.isMoveInitial = !Helpers.checkCollision(ballMain,playerR,playerLeft)
         }
     }
 
-    // Create a temporary players and a ball with array values, to be able to know if the player is moving in and angle or straight
-    function elementDirection (el,val) {
-        el.push(val)
-        if(el.length > 3){
-           el.shift()
-           return el
-        }else{
-            return el
-        }
-    }
 }
