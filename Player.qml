@@ -1,9 +1,13 @@
 import QtQuick 2.12
+import "Helpers.js" as Helpers
 
 PlayerForm {
 
     property var pressedKey
     property int speed: 3
+    property var dirX: []
+    property var dirY: []
+    property string direction: "cons"
 
     function move () {
 
@@ -11,7 +15,9 @@ PlayerForm {
 
         case Qt.Key_W:
             if(playerLeft.y >= 0) {
-                playerLeft.y-= speed
+                playerLeft.y-= speed                
+                dirY = Helpers.getElementDirection(dirY, y)
+                direction = Helpers.setElementDirection(dirY)
                 console.log(`pressed ${playerLeft.playerName} and key W`)
             }
             break
@@ -19,6 +25,8 @@ PlayerForm {
         case Qt.Key_S:
             if(playerLeft.y <= 720) {
                 playerLeft.y+= speed
+                dirY = Helpers.getElementDirection(dirY, y)
+                direction = Helpers.setElementDirection(dirY)
                 console.log(`pressed ${playerLeft.playerName} and S`)
             }
             break
@@ -26,6 +34,8 @@ PlayerForm {
         case Qt.Key_Up:
             if(playerRight.y >= 0) {
                 playerRight.y-= speed
+                dirY = Helpers.getElementDirection(dirY, y)
+                direction = Helpers.setElementDirection(dirY)
                 console.log(`pressed ${playerRight.playerName} and key UP`)
             }
             break
@@ -33,6 +43,8 @@ PlayerForm {
         case Qt.Key_Down:
             if(playerRight.y <= 720) {
                 playerRight.y+= speed
+                dirY = Helpers.getElementDirection(dirY, y)
+                direction = Helpers.setElementDirection(dirY)
                 console.log(`pressed ${playerRight.playerName} and key DOWN`)
             }
             break

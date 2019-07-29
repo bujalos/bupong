@@ -15,6 +15,7 @@ BallForm {
     property string direction
     property string playerRightDirection
     property string playerLeftDirection
+    property string collision: "none"
 
     x: 390.00
     y: 390.00
@@ -27,23 +28,86 @@ BallForm {
             y += (valY * speed)
             dirX = Helpers.getElementDirection(dirX, x)
             dirY = Helpers.getElementDirection(dirY, y)
+            direction = Helpers.setElementDirection(dirY)
         }else if(playerRightScore > playerLeftScore) {
             x -= (valX * speed)
             y -= (valY * speed)
             dirX = Helpers.getElementDirection(dirX, x)
             dirY = Helpers.getElementDirection(dirY, y)
+            direction = Helpers.setElementDirection(dirY)
         }else{
             x += (valX * speed)
             y += (valY * speed)
             dirX = Helpers.getElementDirection(dirX, x)
             dirY = Helpers.getElementDirection(dirY, y)
+            direction = Helpers.setElementDirection(dirY)
         }
-        checkPosition()
+        checkPosition()        
         console.log(`Player right position X: ${playerRight.x} and Y: ${playerRight.y}`)
     }
 
     function move() {
-      console.log("move normal...")
+      var topWall = 0.0;
+      var bottomWall = 800.0;
+
+      var tempPlayer = collision === "left" ? playerLeft : playerRight
+      setBallBounce(ballMain, tempPlayer, topWall, bottomWall)
+      checkPosition()
+    }
+
+    function setBallBounce(ball, player, topWall, bottomWall) {
+        var valX = 1
+        var valY = 1
+        // set X direction
+        if(ball.collision === "left") {
+            ball.x += (valX * ball.speed)
+        }else{
+            ball.x -= (valX * ball.speed)
+        }
+        // set Y direction
+        if(player.direction === "cons" && ball.direction === "cons") {
+            //ball.speed =  ball.speed - 0.2
+            return
+        }
+        if(player.direction === "inc" && ball.direction === "cons") {
+            ball.y++
+            ball.speed = speed * 1.2
+            return
+        }
+        if(player.direction === "dec" && ball.direction === "cons") {
+            ball.y--
+            ball.speed = ball.speed * 1.2
+            return
+        }
+        if(player.direction === "cons" && ball.direction === "inc") {
+            ball.y++
+            return
+        }
+        if(player.direction === "cons" && ball.direction === "dec") {
+            ball.y--
+            ball.speed = ball.speed / 1.2
+            return
+        }
+        if(player.direction === "dec" && ball.direction === "inc") {
+            ball.y--
+            ball.speed = ball.speed / 1.2
+            return
+        }
+        if(player.direction === "inc" && ball.direction === "dec") {
+            ball.y++
+            ball.speed = ball.speed / 1.2
+            return
+        }
+        if(player.direction === "inc" && ball.direction === "inc") {
+            ball.y++
+            ball.speed = ball.speed * 1.2
+            return
+        }
+        if(player.direction === "dec" && ball.direction === "dec") {
+            ball.y--
+            ball.speed = ball.speed * 1.2
+            return
+        }
     }
 
 
@@ -51,18 +115,28 @@ BallForm {
 
     // create scores and and sets initial move to true
     function checkPosition() {
-        if(x > 771.00) {
+        checkCollision(ballMain,playerRight,playerLeft)
+        if(x > 770.00) {
             ballMain.playerLeftScore++
             ballMain.x = 390.00
             ballMain.y = 390.00
             ballMain.isMoveInitial = true
-        }else if(x < 19.00) {
+        }else if(x < 20.00) {
             ballMain.playerRightScore++
             ballMain.x = 390.00
             ballMain.y = 390.00
             ballMain.isMoveInitial = true
         }else{
-            ballMain.isMoveInitial = !Helpers.checkCollision(ballMain,playerR,playerLeft)
+
+        }
+    }
+
+    function checkCollision(ball, playerR, playerL) {
+        if(ball.x === 762 || ball.x === 22 ) {
+            if(ball.y >= playerL.y && ball.y <= playerL.y + 80 || ball.y >= playerR.y && ball.y <= playerR.y + 80) {
+                ball.isMoveInitial = false
+                ball.collision = ball.x === 762 ? "right" : "left"
+            }
         }
     }
 

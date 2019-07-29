@@ -64,13 +64,10 @@ function setBallBounce(ball, player, topWall, bottomWall) {
 }
 
 function checkCollision(ball, playerR, playerL) {
-    if(ball.x === 770 || ball.x === 20 ) {
-        if(ball.y >= playerL.y && ball.y <= playerL.y + 80) {
+    if(ball.x === 762 || ball.x === 32 ) {
+        ball.collision = ball.x === 762 ? "right" : "left"
+        if(ball.y >= playerL.y && ball.y <= playerL.y + 80 || ball.y >= playerR.y && ball.y <= playerR.y + 80) {
             return true
-        }else if(ball.y >= playerR.y && ball.y <= playerR.y + 80) {
-            return true
-        }else{
-            return false
         }
-    }
+    }    
 }
