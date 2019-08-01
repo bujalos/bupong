@@ -3,54 +3,47 @@ import "Helpers.js" as Helpers
 
 PlayerForm {
 
-    property var pressedKey
+    property int pressedKey
     property int speed: 3
     property var dirX: []
     property var dirY: []
     property string direction: "cons"
+    property var up
+    property var down
 
-    function move () {
+    property bool moveUp: false
+    property bool moveDown: false
+
+    function move() {
         dirY = Helpers.getElementDirection(dirY, y)
 
-        switch (pressedKey) {
-
-        case Qt.Key_W:
-            if(playerLeft.y >= 0) {
-                playerLeft.y-= speed
+        if (moveUp) {
+            if (y >= 0) {
+                y-= speed
             }
-            break
-
-        case Qt.Key_S:
-            if(playerLeft.y <= 720) {
-                playerLeft.y+= speed
-            }
-            break
-
-        case Qt.Key_Up:
-            if(playerRight.y >= 0) {
-                playerRight.y-= speed
-            }
-            break
-
-        case Qt.Key_Down:
-            if(playerRight.y <= 720) {
-                playerRight.y+= speed
-            }
-            break
-
-        default:
-            //console.log("default case")
-            break
         }
+
+        if (moveDown) {
+            if (y <= 725) {
+                y+= speed
+            }
+        }
+
     }
 
 
     Keys.onPressed: {
-        pressedKey = event.key
+        if (event.key === up)
+            moveUp = true
+        if (event.key === down)
+            moveDown = true
     }
+
 
     Keys.onReleased: {
-        pressedKey = null
+        if (event.key === up)
+            moveUp = false
+        if (event.key === down)
+            moveDown = false
     }
-
 }
