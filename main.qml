@@ -55,15 +55,7 @@ Window {
             playerRight: playerRight
             playerLeft: playerLeft
         }
-/*
-        Keys.onPressed: {
-            mainBackground.pressedKey = event
-        }
 
-        Keys.onReleased: {
-            mainBackground.pressedKey = null
-        }
-*/
         Component.onCompleted: {
             Keys.forwardTo = [playerLeft, playerRight]
         }

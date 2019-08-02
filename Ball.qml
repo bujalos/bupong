@@ -15,7 +15,7 @@ BallForm {
     property string direction
     property string playerRightDirection
     property string playerLeftDirection
-    property bool collision: false
+    property bool collisionTopBottom: false
     property string collisionSide: "none"
 
     x: 390.00
@@ -35,17 +35,20 @@ BallForm {
             x += (valX * speed)
             y += (valY * speed)
         }
-        checkCollision(ballMain,playerRight,playerLeft)
-        checkPosition()
+        Helpers.checkCollision(ballMain,playerRight,playerLeft)
+        Helpers.checkPosition(ballMain)
     }
 
     function move() {
         var topWall = 0.0;
         var bottomWall = 800.0;
-        checkCollision(ballMain,playerRight,playerLeft)
-        var tempPlayer = collisionSide === "left" ? playerLeft : playerRight
-        setBallBounce(ballMain, tempPlayer, topWall, bottomWall)
-        checkPosition()
+        Helpers.checkCollision(ballMain,playerRight,playerLeft)
+        if(collisionSide === "left") {
+            setBallBounce(ballMain, playerLeft, topWall, bottomWall)
+        }else if(collisionSide === "right"){
+            setBallBounce(ballMain, playerRight, topWall, bottomWall)
+        }
+        Helpers.checkPosition(ballMain)
     }
 
     function setBallBounce(ball, player, topWall, bottomWall) {
@@ -53,122 +56,63 @@ BallForm {
         var valY = 1
 
         // set X direction
-        if(collisionSide === "left") {
+        if(ball.collisionSide === "left") {
             ball.x += (valX * ball.speed)
-        }else if(collisionSide === "right"){
+        }else if(ball.collisionSide === "right"){
             ball.x -= (valX * ball.speed)
+        }
+
+        if(ball.collisionTopBottom && ball.direction === "dec"){
+            ball.y--
+            return
+        }else if(ball.collisionTopBottom && ball.direction === "inc") {
+            ball.y++
+            return
         }
 
         // set Y direction
         if(player.direction === "cons" && ball.direction === "cons") {
-            //ball.speed =  ball.speed - 0.2
             return
         }
         if(player.direction === "cons" && ball.direction === "dec") {
-            if(checkSideCollisions()) {
-                ball.y++
-                return
-            }
             ball.y--
             ball.speed = 0.8
             return
         }
         if(player.direction === "cons" && ball.direction === "inc") {
-            if(checkSideCollisions()) {
-                ball.y--
-                return
-            }
             ball.y++
+            ball.speed = 0.8
             return
         }
         if(player.direction === "inc" && ball.direction === "cons") {
-            ball.y++
+            ball.y--
             ball.speed = 1.2
             return
         }
         if(player.direction === "inc" && ball.direction === "dec") {
-            if(checkSideCollisions()) {
-                ball.y++
-                return
-            }
-            ball.y++
+            ball.y--
             ball.speed = 0.8
             return
         }
         if(player.direction === "inc" && ball.direction === "inc") {
-            if(checkSideCollisions()) {
-                ball.y--
-                return
-            }
+            ball.y--
+            ball.speed = 1.5
+            return
+        }
+        if(player.direction === "dec" && ball.direction === "cons") {
+            ball.y++
+            ball.speed = 1.2
+            return
+        }
+        if(player.direction === "dec" && ball.direction === "inc") {
             ball.y++
             ball.speed = 0.8
             return
         }
-        if(player.direction === "dec" && ball.direction === "cons") {
-            ball.y--
-            ball.speed = 1.2
-            return
-        }
-
-        if(player.direction === "dec" && ball.direction === "inc") {
-            if(checkSideCollisions()) {
-                ball.y--
-                return
-            }
-            ball.y--
-            ball.speed = 0.8
-            return
-        }
         if(player.direction === "dec" && ball.direction === "dec") {
-            if(checkSideCollisions()) {
-                ball.y++
-                return
-            }
             ball.y--
             ball.speed = 1.2
             return
         }
     }
-
-    // create scores and and sets initial move to true
-    function checkPosition() {
-        dirY = Helpers.getElementDirection(dirY, y)
-        if(ballMain.x >= 766.00) {
-            console.log(`Ball X:${x}, Y:${y}`)
-            ballMain.playerLeftScore++
-            ballMain.x = 390.00
-            ballMain.y = 390.00
-            ballMain.isMoveInitial = true
-        }else if(ballMain.x <= 23.00) {
-            console.log(`Ball X:${x}, Y:${y}`)
-            ballMain.playerRightScore++
-            ballMain.x = 390.00
-            ballMain.y = 390.00
-            ballMain.isMoveInitial = true
-        }
-    }
-
-    function checkCollision(ball, playerR, playerL) {
-        if((ball.x >= 762) && (ball.x <= 765.999) && (ball.y >= playerR.y && ball.y <= playerR.y + 80)) {
-            ball.isMoveInitial = false
-            playerL.direction = Helpers.setElementDirection(playerL.dirY)
-            playerR.direction = Helpers.setElementDirection(playerR.dirY)
-            ball.direction = Helpers.setElementDirection(ball.dirY)
-            ball.collisionSide = "right"
-        }else if((ball.x >= 23.001) && (ball.x <= 25) && (ball.y >= playerL.y && ball.y <= playerL.y + 80)) {
-            ball.isMoveInitial = false
-            playerL.direction = Helpers.setElementDirection(playerL.dirY)
-            playerR.direction = Helpers.setElementDirection(playerR.dirY)
-            ball.direction = Helpers.setElementDirection(ball.dirY)
-            ball.collisionSide = "left"
-        }
-    }
-
-    function checkSideCollisions() {
-        if(ballMain.y <= 10 || ballMain.y >= 790) {
-            return true
-        }
-        return false
-    }
-
 }

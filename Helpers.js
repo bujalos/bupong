@@ -26,48 +26,44 @@ function setElementDirection(el) {
 }
 
 // calculate ball bounce angle and speed
-function setBallBounce(ball, player, topWall, bottomWall) {
-    if(player.direction === "cons" && ball.direction === "cons") {
-        ball.y = ball.y
-        return
-    }
-    if(player.direction === "cons" && ball.direction === "inc") {
-        ball.y++
-        ball.speed = ball.speed / 1.2
-        return
-    }
-    if(player.direction === "cons" && ball.direction === "dec") {
-        ball.y--
-        ball.speed = ball.speed / 1.2
-        return
-    }
-    if(player.direction === "dec" && ball.direction === "inc") {
-        ball.y--
-        ball.speed = ball.speed / 1.2
-        return
-    }
-    if(player.direction === "inc" && ball.direction === "dec") {
-        ball.y++
-        ball.speed = ball.speed / 1.2
-        return
-    }
-    if(player.direction === "inc" && ball.direction === "inc") {
-        ball.y++
-        ball.speed = ball.speed * 1.2
-        return
-    }
-    if(player.direction === "dec" && ball.direction === "dec") {
-        ball.y--
-        ball.speed = ball.speed * 1.2
-        return
+
+
+function checkCollision(ball, playerR, playerL) {
+    if((ball.x >= 762) && (ball.x <= 765.999) && (ball.y >= playerR.y && ball.y <= playerR.y + 80)) {
+        ball.isMoveInitial = false
+        playerL.direction = Helpers.setElementDirection(playerL.dirY)
+        playerR.direction = Helpers.setElementDirection(playerR.dirY)
+        ball.direction = Helpers.setElementDirection(ball.dirY)
+        ball.collisionSide = "right"
+        ball.collisionTopBottom = false
+    }else if((ball.x >= 23.001) && (ball.x <= 25) && (ball.y >= playerL.y && ball.y <= playerL.y + 80)) {
+        ball.isMoveInitial = false
+        playerL.direction = Helpers.setElementDirection(playerL.dirY)
+        playerR.direction = Helpers.setElementDirection(playerR.dirY)
+        ball.direction = Helpers.setElementDirection(ball.dirY)
+        ball.collisionSide = "left"
+        ball.collisionTopBottom = false
+    }else if(ball.y <= 0 || ball.y >= 780) {
+        ball.isMoveInitial = false
+        ball.collisionTopBottom = true
+        playerL.direction = Helpers.setElementDirection(playerL.dirY)
+        playerR.direction = Helpers.setElementDirection(playerR.dirY)
+        ball.direction = Helpers.setElementDirection(ball.dirY)
     }
 }
 
-function checkCollision(ball, playerR, playerL) {
-    if(ball.x === 762 || ball.x === 32 ) {
-        ball.collision = ball.x === 762 ? "right" : "left"
-        if(ball.y >= playerL.y && ball.y <= playerL.y + 80 || ball.y >= playerR.y && ball.y <= playerR.y + 80) {
-            return true
-        }
-    }    
+// create scores and and sets initial move to true
+function checkPosition(ball) {
+    ball.dirY = Helpers.getElementDirection(ball.dirY, ball.y)
+    if(ball.x >= 766.00) {
+        ball.playerLeftScore++
+        ball.x = 390.00
+        ball.y = 390.00
+        ball.isMoveInitial = true
+    }else if(ball.x <= 23.00) {
+        ball.playerRightScore++
+        ball.x = 390.00
+        ball.y = 390.00
+        ball.isMoveInitial = true
+    }
 }
